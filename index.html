@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>أوقات الصلاة في مصر</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* CSS Styling */
+        body {
+            font-family: 'Cairo', sans-serif; /* Changed font to Cairo */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+            overflow: hidden;
+            background: url('https://img.freepik.com/free-vector/hand-drawn-flat-design-salat-illustration_23-2149272402.jpg?t=st=1735866633~exp=1735870233~hmac=7b70cd97f46ebab92d4813a59fdacf5748364b0a8446f1e60538cfebfde3c08c&w=740') no-repeat center center/cover;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.6); /* Dark overlay for better text visibility */
+            z-index: -1;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(15px);
+            text-align: center;
+            max-width: 500px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+        }
+
+        h1 {
+            margin-bottom: 10px; /* Reduced margin for tagline */
+            font-size: 2.5em;
+            font-weight: 700;
+            background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fbc2eb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradientText 5s ease infinite;
+        }
+
+        .tagline {
+            font-size: 1.2em;
+            color: rgba(255, 255, 255, 0.8);
+            margin-bottom: 20px;
+        }
+
+        @keyframes gradientText {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .city-selector {
+            margin-bottom: 25px;
+            position: relative;
+        }
+
+        .city-selector label {
+            font-size: 1.1em;
+            margin-left: 10px;
+        }
+
+        .city-selector select {
+            padding: 10px 15px;
+            border-radius: 8px;
+            border: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 1em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-family: 'Cairo', sans-serif; /* Changed font to Cairo */
+        }
+
+        /* Change the font color of the dropdown options */
+        .city-selector select option {
+            color: #000; /* Black text color */
+            background-color: #fff; /* White background for options */
+            font-family: 'Cairo', sans-serif; /* Changed font to Cairo */
+        }
+
+        .city-selector select:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: scale(1.02);
+        }
+
+        #prayer-times {
+            font-size: 1.2em;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+        }
+
+        #prayer-times div {
+            margin: 15px 0;
+            font-size: 1.1em;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        #prayer-times div:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: translateX(-10px);
+        }
+
+        #prayer-times div:last-child {
+            border-bottom: none;
+        }
+
+        .prayer-name {
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .prayer-name i {
+            color: #ffdd57;
+        }
+
+        .prayer-time {
+            font-weight: 600;
+            color: #ffdd57;
+        }
+
+        .loading {
+            font-size: 1.2em;
+            color: #fff;
+        }
+
+        .error-message {
+            font-size: 1.2em;
+            color: #ff6b6b;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <h1>أوقات الصلاة في مصر</h1>
+        <div class="tagline">استخدم موقعنا لمعرفة أوقات الصلاة بدقة في جميع مدن مصر.</div>
+        <div class="city-selector">
+            <label for="city">اختر المدينة:</label>
+            <select id="city">
+                <option value="Cairo">القاهرة</option>
+                <option value="Alexandria">الإسكندرية</option>
+                <option value="Giza">الجيزة</option>
+                <option value="Shubra El-Kheima">شبرا الخيمة</option>
+                <option value="Port Said">بورسعيد</option>
+                <option value="Suez">السويس</option>
+                <option value="Luxor">الأقصر</option>
+                <option value="Mansoura">المنصورة</option>
+                <option value="El-Mahalla El-Kubra">المحلة الكبرى</option>
+                <option value="Tanta">طنطا</option>
+                <option value="Asyut">أسيوط</option>
+                <option value="Ismailia">الإسماعيلية</option>
+                <option value="Faiyum">الفيوم</option>
+                <option value="Zagazig">الزقازيق</option>
+                <option value="Aswan">أسوان</option>
+                <option value="Damietta">دمياط</option>
+                <option value="Damanhur">دمنهور</option>
+                <option value="Minya">المنيا</option>
+                <option value="Beni Suef">بني سويف</option>
+                <option value="Qena">قنا</option>
+                <option value="Sohag">سوهاج</option>
+                <option value="Hurghada">الغردقة</option>
+                <option value="6th of October City">السادس من أكتوبر</option>
+                <option value="Shibin El Kom">شبين الكوم</option>
+                <option value="Banha">بنها</option>
+                <option value="Arish">العريش</option>
+                <option value="10th of Ramadan City">العاشر من رمضان</option>
+                <option value="Kafr El Sheikh">كفر الشيخ</option>
+                <option value="Marsa Matruh">مرسى مطروح</option>
+                <option value="Qalyub">قليوب</option>
+                <option value="Idku">إدكو</option>
+                <option value="Abu Kabir">أبو كبير</option>
+                <option value="Desouk">دسوق</option>
+                <option value="Jirja">جرجا</option>
+                <option value="Akhmim">أخميم</option>
+                <option value="Bilbais">بلبيس</option>
+                <option value="Matareya">المطرية</option>
+                <option value="Quesna">قويسنا</option>
+                <option value="Samalut">سمالوط</option>
+                <option value="Manfalut">منفلوط</option>
+                <option value="Tahta">طهطا</option>
+                <option value="Abnub">أبنوب</option>
+                <option value="Abu Tig">أبو تيج</option>
+                <option value="El Badari">البدارى</option>
+                <option value="El Qusiya">القوصية</option>
+                <option value="El Fashn">الفشن</option>
+                <option value="El Idwa">الإدوا</option>
+                <option value="El Minya">المنيا</option>
+                <option value="El Wasta">الواسطى</option>
+                <option value="Bani Mazar">بني مزار</option>
+                <option value="Deir Mawas">دير مواس</option>
+                <option value="Maghagha">مغاغة</option>
+                <option value="Mallawi">ملوي</option>
+                <option value="Matai">مطاي</option>
+                <option value="Samalut">سمالوط</option>
+                <option value="Sidfa">صدفا</option>
+                <option value="Tama">تما</option>
+                <option value="Tuna El-Gabal">تونا الجبل</option>
+            </select>
+        </div>
+        <div id="prayer-times">
+            <div class="loading">جاري تحديد موقعك...</div>
+        </div>
+    </div>
+
+    <script>
+        // Prayer Names in Arabic
+        const prayerNames = {
+            Fajr: "الفجر",
+            Dhuhr: "الظهر",
+            Asr: "العصر",
+            Magh
